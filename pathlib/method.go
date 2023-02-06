@@ -108,23 +108,25 @@ func (h *Handler) Join(paths ...string) *Handler {
 }
 
 // ShowDir 返回文件夹列表：大文件建议 walk、iter
-func (h *Handler) ShowDir() (allPaths []string, err error) {
+func (h *Handler) ShowDir() (allPaths []*Handler, err error) {
 	var dir *os.File
 
 	if h.Exists() {
 		if h.IsDir() {
+			var names []string
+
 			dir, err = os.Open(h.Path)
 			if err != nil {
 				return
 			}
 
-			allPaths, err = dir.Readdirnames(0) // <=0 返回所有
+			names, err = dir.Readdirnames(0) // <=0 返回所有
 			if err != nil {
 				return
 			}
 
-			for i, f := range allPaths {
-				allPaths[i] = filepath.Join(h.Path, f)
+			for _, f := range names {
+				allPaths = append(allPaths, CopyHandler(filepath.Join(h.Path, f), h))
 			}
 
 			defer dir.Close()
