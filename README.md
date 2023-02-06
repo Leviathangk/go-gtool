@@ -11,9 +11,9 @@
 路径操作工具，类似 python 中的 pathlib，集成了常用方法
 
 ```
-p := pathlib.Path("D:\\Download")
+p := pathlib.NewPath("D:\\Download")
 
-err := p.Iter(func(path *pathlib.Handler, err error) error {
+err := p.Iter(func(path *pathlib.Path, err error) error {
     fmt.Println(path)
     return err
 })
