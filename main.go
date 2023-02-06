@@ -2,17 +2,19 @@ package main
 
 import (
 	"fmt"
-	"gtool/file"
+	"gtool/pathlib"
+	"log"
 )
 
 func main() {
-	fmt.Println("Hello world!")
-	info, err := file.Info("D:\\Windows.iso")
-	if err != nil {
-		return
-	}
+	p := pathlib.Path("D:\\Download")
 
-	fmt.Println(info.Name())
-	fmt.Println(info.ModTime())
-	fmt.Println(info.Size())
+	err := p.Iter(func(path *pathlib.Handler, err error) error {
+		fmt.Println(path)
+		return err
+	})
+
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
