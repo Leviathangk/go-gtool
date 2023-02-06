@@ -129,7 +129,11 @@ func (h *Handler) ShowDir() (allPaths []*Handler, err error) {
 				allPaths = append(allPaths, CopyHandler(filepath.Join(h.Path, f), h))
 			}
 
-			defer dir.Close()
+			defer func(dir *os.File) {
+				err = dir.Close()
+				if err != nil {
+				}
+			}(dir)
 
 			return
 		}
